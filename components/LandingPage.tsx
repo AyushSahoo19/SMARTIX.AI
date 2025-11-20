@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Network, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { SmartixWorkspace } from '../SmartixWorkspace';
@@ -7,43 +8,78 @@ interface LandingPageProps {
   onGetStarted: () => void;
 }
 
-const DEMO_PROJECT: Project = {
-  id: 'demo-proj-1',
-  name: 'Mars Colonization Hub',
-  description: 'Establish initial infrastructure for sustainable off-world habitat.',
-  ownerId: 'demo-user',
-  createdAt: new Date().toISOString(),
-  tasks: [
-    { id: 't1', title: 'Site Selection Survey', description: 'Analyze surface topology for optimal landing and habitat zones.', status: TaskStatus.DONE, priority: Priority.CRITICAL, estimatedHours: 48, dependencies: [], assignedResourceIds: ['r1'], timeTracked: 172800, isTracking: false, dueDate: '2025-01-15' },
-    { id: 't2', title: 'Deploy Solar Array', description: 'Install PV modules and connect to main power grid.', status: TaskStatus.IN_PROGRESS, priority: Priority.HIGH, estimatedHours: 72, dependencies: ['t1'], assignedResourceIds: ['r2', 'r3'], timeTracked: 36000, isTracking: true, dueDate: '2025-02-01' },
-    { id: 't3', title: 'Hydroponics Setup', description: 'Initialize aeroponic growth chambers for food production.', status: TaskStatus.TODO, priority: Priority.MEDIUM, estimatedHours: 120, dependencies: ['t2'], assignedResourceIds: ['r1'], timeTracked: 0, isTracking: false, dueDate: '2025-03-10' },
-    { id: 't4', title: 'Comms Relay Config', description: 'Establish high-bandwidth link with orbital orbiter.', status: TaskStatus.TODO, priority: Priority.HIGH, estimatedHours: 24, dependencies: [], assignedResourceIds: ['r3'], timeTracked: 0, isTracking: false, dueDate: '2025-01-20' },
-  ],
-  resources: [
-    { id: 'r1', name: 'Dr. Elena V.', type: 'PERSON', details: 'Chief Exobiologist', url: '' },
-    { id: 'r2', name: 'Rover Unit 7', type: 'TOOL', details: 'Autonomous Construction Bot', url: '' },
-    { id: 'r3', name: 'Mark Watney', type: 'GENIUS', details: 'Botanist & Engineer', url: '' },
-    { id: 'r4', name: 'SpaceX Starship', type: 'PROJECT', details: 'Heavy Lift Vehicle', url: 'https://spacex.com' },
-    { id: 'r5', name: 'NASA API', type: 'GITHUB', details: 'Telemetry Data', url: 'https://github.com/nasa' },
-  ],
-  mindMap: {
-    nodes: [
-      { id: 'n1', label: 'Mars Base Alpha', type: 'ROOT', x: 0, y: 0 },
-      { id: 'n2', label: 'Power Systems', type: 'TASK', x: -250, y: 100, relatedId: 't2' },
-      { id: 'n3', label: 'Life Support', type: 'TASK', x: 250, y: 100, relatedId: 't3' },
-      { id: 'n4', label: 'Rover Unit 7', type: 'RESOURCE', x: -400, y: 200, relatedId: 'r2' },
-      { id: 'n5', label: 'Dr. Elena V.', type: 'RESOURCE', x: 400, y: 200, relatedId: 'r1' },
-      { id: 'n6', label: 'Comms Uplink', type: 'TASK', x: 0, y: 250, relatedId: 't4' },
+const DEMO_PROJECTS: Project[] = [
+  {
+    id: 'demo-mars',
+    name: 'Mars Colonization Hub',
+    description: 'Establish initial infrastructure for sustainable off-world habitat.',
+    ownerId: 'demo-user',
+    createdAt: new Date().toISOString(),
+    tasks: [
+      { id: 't1', title: 'Site Selection Survey', description: 'Analyze surface topology for optimal landing and habitat zones.', status: TaskStatus.DONE, priority: Priority.CRITICAL, estimatedHours: 48, dependencies: [], assignedResourceIds: ['r1'], timeTracked: 172800, isTracking: false, dueDate: '2025-01-15' },
+      { id: 't2', title: 'Deploy Solar Array', description: 'Install PV modules and connect to main power grid.', status: TaskStatus.IN_PROGRESS, priority: Priority.HIGH, estimatedHours: 72, dependencies: ['t1'], assignedResourceIds: ['r2', 'r3'], timeTracked: 36000, isTracking: true, dueDate: '2025-02-01' },
+      { id: 't3', title: 'Hydroponics Setup', description: 'Initialize aeroponic growth chambers for food production.', status: TaskStatus.TODO, priority: Priority.MEDIUM, estimatedHours: 120, dependencies: ['t2'], assignedResourceIds: ['r1'], timeTracked: 0, isTracking: false, dueDate: '2025-03-10' },
+      { id: 't4', title: 'Comms Relay Config', description: 'Establish high-bandwidth link with orbital orbiter.', status: TaskStatus.TODO, priority: Priority.HIGH, estimatedHours: 24, dependencies: [], assignedResourceIds: ['r3'], timeTracked: 0, isTracking: false, dueDate: '2025-01-20' },
     ],
-    edges: [
-      { id: 'e1', source: 'n1', target: 'n2' },
-      { id: 'e2', source: 'n1', target: 'n3' },
-      { id: 'e3', source: 'n2', target: 'n4' },
-      { id: 'e4', source: 'n3', target: 'n5' },
-      { id: 'e5', source: 'n1', target: 'n6' },
-    ]
+    resources: [
+      { id: 'r1', name: 'Dr. Elena V.', type: 'PERSON', details: 'Chief Exobiologist', url: '' },
+      { id: 'r2', name: 'Rover Unit 7', type: 'TOOL', details: 'Autonomous Construction Bot', url: '' },
+      { id: 'r3', name: 'Mark Watney', type: 'GENIUS', details: 'Botanist & Engineer', url: '' },
+      { id: 'r4', name: 'SpaceX Starship', type: 'PROJECT', details: 'Heavy Lift Vehicle', url: 'https://spacex.com' },
+      { id: 'r5', name: 'NASA API', type: 'GITHUB', details: 'Telemetry Data', url: 'https://github.com/nasa' },
+    ],
+    mindMap: {
+      nodes: [
+        { id: 'n1', label: 'Mars Base Alpha', type: 'ROOT', x: 0, y: 0 },
+        { id: 'n2', label: 'Power Systems', type: 'TASK', x: -250, y: 100, relatedId: 't2' },
+        { id: 'n3', label: 'Life Support', type: 'TASK', x: 250, y: 100, relatedId: 't3' },
+        { id: 'n4', label: 'Rover Unit 7', type: 'RESOURCE', x: -400, y: 200, relatedId: 'r2' },
+        { id: 'n5', label: 'Dr. Elena V.', type: 'RESOURCE', x: 400, y: 200, relatedId: 'r1' },
+        { id: 'n6', label: 'Comms Uplink', type: 'TASK', x: 0, y: 250, relatedId: 't4' },
+      ],
+      edges: [
+        { id: 'e1', source: 'n1', target: 'n2' },
+        { id: 'e2', source: 'n1', target: 'n3' },
+        { id: 'e3', source: 'n2', target: 'n4' },
+        { id: 'e4', source: 'n3', target: 'n5' },
+        { id: 'e5', source: 'n1', target: 'n6' },
+      ]
+    }
+  },
+  {
+    id: 'demo-saas',
+    name: 'AI Analytics Platform',
+    description: 'Launch MVP for enterprise-grade predictive analytics dashboard.',
+    ownerId: 'demo-user',
+    createdAt: new Date().toISOString(),
+    tasks: [
+      { id: 'st1', title: 'Core Architecture', description: 'Define system boundaries and microservices.', status: TaskStatus.DONE, priority: Priority.HIGH, estimatedHours: 80, dependencies: [], assignedResourceIds: ['sr1'], timeTracked: 288000, isTracking: false, dueDate: '2024-10-01' },
+      { id: 'st2', title: 'Neural Weights API', description: 'Implement quantization endpoints.', status: TaskStatus.TODO, priority: Priority.MEDIUM, estimatedHours: 40, dependencies: ['st1'], assignedResourceIds: ['sr2'], timeTracked: 0, isTracking: false, dueDate: '2024-11-15' },
+      { id: 'st3', title: 'Client Dashboard', description: 'React/Three.js visualization layer.', status: TaskStatus.IN_PROGRESS, priority: Priority.LOW, estimatedHours: 100, dependencies: ['st1'], assignedResourceIds: ['sr1'], timeTracked: 12000, isTracking: false, dueDate: '2024-12-20' }
+    ],
+    resources: [
+      { id: 'sr1', name: 'Sarah Chen', type: 'PERSON', details: 'Senior Architect', url: '' },
+      { id: 'sr2', name: 'TensorFlow Docs', type: 'BLOG', details: 'API Reference', url: 'https://www.tensorflow.org' },
+      { id: 'sr3', name: 'AWS Cluster', type: 'TOOL', details: 'GPU Instances (p4d.24xlarge)', url: 'https://aws.amazon.com' },
+      { id: 'sr4', name: 'GitHub Repo', type: 'GITHUB', details: 'Source Code', url: 'https://github.com' }
+    ],
+    mindMap: {
+      nodes: [
+        { id: 'sroot', label: 'Omni-Net', type: 'ROOT', x: 0, y: 0 },
+        { id: 'sn1', label: 'Backend', type: 'TASK', x: -200, y: 100, relatedId: 'st1' },
+        { id: 'sn2', label: 'Frontend', type: 'TASK', x: 200, y: 100, relatedId: 'st3' },
+        { id: 'sn3', label: 'AWS', type: 'RESOURCE', x: -300, y: 200, relatedId: 'sr3' },
+        { id: 'sn4', label: 'GitHub', type: 'RESOURCE', x: 0, y: 250, relatedId: 'sr4' }
+      ],
+      edges: [
+        { id: 'se1', source: 'sroot', target: 'sn1' },
+        { id: 'se2', source: 'sroot', target: 'sn2' },
+        { id: 'se3', source: 'sn1', target: 'sn3' },
+        { id: 'se4', source: 'sroot', target: 'sn4' }
+      ]
+    }
   }
-};
+];
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
   return (
@@ -134,7 +170,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
                     user={{ id: 'demo', name: 'Demo User', email: 'demo@smartix.ai' }} 
                     onLogout={() => {}} 
                     isDemo={true}
-                    initialProject={DEMO_PROJECT}
+                    initialProjects={DEMO_PROJECTS}
                  />
               </div>
            </div>

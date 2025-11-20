@@ -65,10 +65,10 @@ interface SmartixWorkspaceProps {
   user: UserType;
   onLogout: () => void;
   isDemo?: boolean;
-  initialProject?: Project;
+  initialProjects?: Project[];
 }
 
-export const SmartixWorkspace: React.FC<SmartixWorkspaceProps> = ({ user, onLogout, isDemo = false, initialProject }) => {
+export const SmartixWorkspace: React.FC<SmartixWorkspaceProps> = ({ user, onLogout, isDemo = false, initialProjects }) => {
   // --- State ---
   const [projects, setProjects] = useState<Project[]>([]);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
@@ -94,9 +94,9 @@ export const SmartixWorkspace: React.FC<SmartixWorkspaceProps> = ({ user, onLogo
   // --- Data Loading ---
 
   useEffect(() => {
-    if (isDemo && initialProject) {
-      setProjects([initialProject]);
-      setActiveProjectId(initialProject.id);
+    if (isDemo && initialProjects && initialProjects.length > 0) {
+      setProjects(initialProjects);
+      setActiveProjectId(initialProjects[0].id);
     } else if (!isDemo && user) {
       const saved = localStorage.getItem(`smartix_projects_${user.id}`);
       if (saved) {
@@ -110,7 +110,7 @@ export const SmartixWorkspace: React.FC<SmartixWorkspaceProps> = ({ user, onLogo
         setActiveProjectId(null);
       }
     }
-  }, [user, isDemo, initialProject]); // Added dependencies to prevent loops, though typical usage won't change these props
+  }, [user, isDemo, initialProjects]);
 
   // Save projects
   useEffect(() => {
@@ -152,8 +152,6 @@ export const SmartixWorkspace: React.FC<SmartixWorkspaceProps> = ({ user, onLogo
     if (!prompt.trim() || !user) return;
     setIsGenerating(true);
     try {
-      // In demo mode, we might want to simulate generation or allow real generation if API key works
-      // For now, we allow real generation as requested "full functionality"
       const result = await generateProjectPlan(prompt);
       
       const newTasks: Task[] = (result.tasks || []).map((t: any, idx: number) => ({
